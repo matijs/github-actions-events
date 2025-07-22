@@ -1,0 +1,16 @@
+name: events
+
+on:
+  issue_comment:
+
+permissions:
+  issues: read
+
+jobs:
+  pr_comment:
+    if: ${{ github.event.issue.pull_request }}
+    runs_on: ubuntu-latest
+    steps:
+      - name: pull request comment
+        run: |
+          echo ${{ github.event_name }}
