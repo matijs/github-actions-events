@@ -2,15 +2,27 @@ name: events
 
 on:
   issue_comment:
+  pull_request:
 
 permissions:
   issues: read
 
 jobs:
-  pr_comment:
-    if: ${{ github.event.issue.pull_request }}
+  pr_comment_created:
+    if: ${{ github.event.issue.pull_request && github.event.action == 'created' }}
     runs-on: ubuntu-latest
     steps:
-      - name: pull request comment
-        run: |
-          echo ${{ github.event_name }}
+      - run: |
+          echo '${{ github.event_name }}: ${{ github.event.action }}'
+  pr_comment_edited:
+    if: ${{ github.event.issue.pull_request && github.event.action == 'edited' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo '${{ github.event_name }}: ${{ github.event.action }}'
+  pr_comment_deleted:
+    if: ${{ github.event.issue.pull_request && github.event.action == 'deleted' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo '${{ github.event_name }}: ${{ github.event.action }}'
