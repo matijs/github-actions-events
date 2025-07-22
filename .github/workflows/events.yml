@@ -11,6 +11,6 @@ jobs:
     if: ${{ github.event.issue.pull_request }}
     runs-on: ubuntu-latest
     steps:
-      - name: pull request comment
-        run: |
+      - run: |
           echo ${{ github.event_name }}
+          echo ${{ github.event.type }}
