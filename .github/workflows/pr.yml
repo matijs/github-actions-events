@@ -1,0 +1,12 @@
+name: pr
+
+on:
+  pull_request:
+
+jobs:
+  checkout:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@HEAD
+      - run: |
+          echo "::notice::Checked out"
