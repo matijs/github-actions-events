@@ -1,0 +1,26 @@
+name: workflow_run
+
+on:
+  workflow_run:
+    workflows:
+      - pr
+    types:
+      - requested
+
+jobs:
+  workflow_run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@latest
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+      - uses: matijs/check-run-actions/start@latest
+        id: check-run-actions-start
+        with:
+          name: ${{ github.job }}
+      - uses: matijs/check-run-actions/complete@latest
+        if: ${{ always() }}
+        with:
+          check-run-id: ${{ steps.check-run-actions-start.outputs.check-run-id }}
+          conclusion: success
+
