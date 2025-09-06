@@ -1,0 +1,35 @@
+name: workflow_run
+
+on:
+  workflow_run:
+    workflows:
+      - pr
+    types:
+      - completed
+
+permissions:
+  actions: read
+  checks: write
+
+jobs:
+  workflow_run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: matijs/check-run-actions/start@HEAD
+        id: start
+        with:
+          name: ${{ github.job }}
+      - run: mkdir ${{ github.workspace }}/artifacts
+      - uses: actions/download-artifact@v5
+        with:
+          name: coverage
+          path: ${{ github.workspace }}/artifacts
+          github-token: ${{ github.token }}
+          run-id: ${{ github.event.workflow_run.id }}
+      - run: ls -alR
+      - uses: matijs/check-run-actions/complete@HEAD
+        if: ${{ always() }}
+        with:
+          check-run-id: ${{ steps.start.outputs.check-run-id }}
+          conclusion: ${{ job.status }}
+
