@@ -1,0 +1,30 @@
+name: workflow_run
+
+on:
+  workflow_run:
+    workflows:
+      - pr
+    types:
+      - requested
+
+permissions:
+  checks: write
+
+jobs:
+  workflow_run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@HEAD
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+      - uses: matijs/check-run-actions/start@HEAD
+        id: start
+        with:
+          name: ${{ github.job }}
+      - run: exit $((RANDOM%2))
+      - uses: matijs/check-run-actions/complete@HEAD
+        if: ${{ always() }}
+        with:
+          check_run_id: ${{ steps.start.outputs.check_run_id }}
+          conclusion: ${{ job.status }}
+
