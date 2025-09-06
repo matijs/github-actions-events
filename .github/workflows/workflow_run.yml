@@ -1,0 +1,30 @@
+name: workflow_run
+
+on:
+  workflow_run:
+    workflows:
+      - pr
+    types:
+      - completed
+
+permissions:
+  checks: write
+
+jobs:
+  workflow_run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: matijs/check-run-actions/start@HEAD
+        id: start
+        with:
+          name: ${{ github.job }}
+      - uses: actions/download-artifact@HEAD
+        with:
+          name: coverage
+      - run: ls -al
+      - uses: matijs/check-run-actions/complete@HEAD
+        if: ${{ always() }}
+        with:
+          check_run_id: ${{ steps.start.outputs.check_run_id }}
+          conclusion: ${{ job.status }}
+
