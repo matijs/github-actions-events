@@ -31,7 +31,7 @@ jobs:
         run: |
           jq -n "${PAYLOAD}"
         env:
-          PAYLOAD: ${{ toJson(github.event.workflow_run) }}
+          PAYLOAD: ${{ toJson(github.event.workflow_run.pull_requests) }}
       - uses: matijs/check-run-actions/complete@HEAD
         if: ${{ always() }}
         with:
