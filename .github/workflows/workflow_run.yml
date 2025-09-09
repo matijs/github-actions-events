@@ -27,6 +27,11 @@ jobs:
           github-token: ${{ github.token }}
           run-id: ${{ github.event.workflow_run.id }}
       - run: ls -alR
+      - name: find PR
+        run: |
+          jq -n "${PAYLOAD}"
+        env:
+          PAYLOAD: ${{ toJson(github.event.workflow_run) }}
       - uses: matijs/check-run-actions/complete@HEAD
         if: ${{ always() }}
         with:
