@@ -18,7 +18,7 @@ jobs:
           jq -n "${__pull_requests__}"
         env:
           __pull_requests__: ${{ toJson(github.event.workflow_run.pull_requests) }}
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@v4
         with:
           name: coverage
           path: ${{ github.workspace }}/artifacts
