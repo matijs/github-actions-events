@@ -1,0 +1,4 @@
+name: New user
+title: "[Nieuwe gebruiker]: "
+body: |
+  - [ ] Wijs de nieuwe gebruiker op `https://github.com/settings/organizations`
