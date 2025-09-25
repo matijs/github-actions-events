@@ -1,7 +1,13 @@
+---
 name: New user
 description: Template to add new users to the NL Design System organisation
-title: "[Nieuwe gebruiker]: "
+title: "[Nieuwe gebruiker]: {github_username}"
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Gebruik dit formulier om een issue aan te maken voor het toevoegen van een nieuwe gebruiker.
+
   - type: input
     id: github_username
     attributes:
@@ -9,6 +15,18 @@ body:
       description: Voer de GitHub gebruikersnaam van de nieuwe gebruiker in. De GitHub gebruikersnaam is hoofdlettergevoelig.
     validations:
       required: true
+
   - type: markdown
     attributes:
-      value: "Hello {github_username}"
+      value: |
+        De checkboxes hieronder zijn voor het issue, je hoeft ze niet in te vullen
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: "Todo"
+      description: "Afvinklijst om het issue te kunnen afronden"
+      options:
+        - label: "Gebruiker aangemaakt"
+        - label: "Pull Request aangemaakt"
+        - label: "Gebruiker gewezen op https://github.com/settings/organizations"
