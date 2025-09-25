@@ -16,3 +16,8 @@ jobs:
           jq -n "${__event__}"
         env:
           __event__: ${{ toJson(github.event) }}
+      - uses: actions/download-artifact@v5
+        with:
+          name: coverage
+          path: ${{ github.workspace }}/artifacts
+          github-token: ${{ github.token }}
