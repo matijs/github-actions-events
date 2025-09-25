@@ -1,4 +1,14 @@
 name: New user
+description: Template to add new users to the NL Design System organisation
 title: "[Nieuwe gebruiker]: "
-body: |
-  - [ ] Wijs de nieuwe gebruiker op `https://github.com/settings/organizations`
+body:
+  - type: input
+    id: github_username
+    attributes:
+      label: GitHub gebuikersnaam
+      description: Voer de GitHub gebruikersnaam van de nieuwe gebruiker in. De GitHub gebruikersnaam is hoofdlettergevoelig.
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: "Hello {github_username}"
