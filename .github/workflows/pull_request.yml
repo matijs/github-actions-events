@@ -1,13 +1,15 @@
-name: pr
+name: pull_request
 
 on:
   pull_request:
+    branches:
+      - main
 
 permissions:
   contents: read
 
 jobs:
-  checkout:
+  pull_request:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5

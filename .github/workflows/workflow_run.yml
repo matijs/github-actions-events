@@ -3,22 +3,21 @@ name: workflow_run
 on:
   workflow_run:
     workflows:
-      - pr
+      - pull_request
     types:
       - completed
 
 permissions:
-  checks: write
+  contents: read
 
 jobs:
   workflow_run:
     runs-on: ubuntu-latest
     steps:
-      - uses: matijs/check-run-actions/start@HEAD
-        id: start
-        with:
-          name: ${{ github.job }}
-      - run: mkdir ${{ github.workspace }}/artifacts
+      - run: |
+          jq -n "${__pull_requests__}"
+        env:
+          __pull_requests__: ${{ toJson(github.event.workflow_run.pull_requests) }}
       - uses: actions/download-artifact@v5
         with:
           name: coverage
@@ -26,14 +25,3 @@ jobs:
           github-token: ${{ github.token }}
           run-id: ${{ github.event.workflow_run.id }}
       - run: ls -alR
-      - name: find PR
-        run: |
-          jq -n "${PAYLOAD}"
-        env:
-          PAYLOAD: ${{ toJson(github.event.workflow_run.pull_requests) }}
-      - uses: matijs/check-run-actions/complete@HEAD
-        if: ${{ always() }}
-        with:
-          check-run-id: ${{ steps.start.outputs.check-run-id }}
-          conclusion: ${{ job.status }}
-
