@@ -1,7 +1,7 @@
 ---
 name: New user
 description: Template to add new users to the NL Design System organisation
-title: "[Nieuwe gebruiker]: {github_username}"
+title: "Nieuwe gebruiker"
 body:
   - type: markdown
     attributes:
