@@ -10,14 +10,14 @@ permissions:
   deployments: write
 
 env:
-  GITHUB_TOKEN: ${{ github.token }}
+  GH_TOKEN: ${{ github.token }}
+  GH_REPO: ${{ github.repository }}
+  ENVIRONMENT: ${{ format('pr-{0}', github.event.pull_request.number) }}
 
 jobs:
   delete:
     runs-on: ubuntu-latest
     steps:
       - name: delete environment
-        uses: octokit/request-action@v2.4.0
-        with:
-          route: DELETE /repos/{owner}/{repo}/environments/{environment}
-          environment: format('pr-{0}', github.event.pull_request.number)
+        run: |
+          gh api --method DELETE /repos/:owner/:repo/environments/${ENVIRONMENT}
