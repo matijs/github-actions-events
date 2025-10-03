@@ -9,6 +9,9 @@ on:
 permissions:
   deployments: write
 
+env:
+  GITHUB_TOKEN: ${{ github.token }}
+
 jobs:
   delete:
     runs-on: ubuntu-latest
