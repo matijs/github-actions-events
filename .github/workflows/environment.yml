@@ -1,0 +1,20 @@
+name: environment
+run-name: Clean up the environment for PR-${{ github.event.pull_request.number }}
+
+on:
+  pull_request:
+    types:
+      - closed
+
+permissions:
+  deployments: write
+
+jobs:
+  delete:
+    runs-on: ubuntu-latest
+    steps:
+      - name: delete environment
+        uses: octokit/request-action@v2.4.0
+        with:
+          route: DELETE /repos/{owner}/{repo}/environments/{environment}
+          environment: format('pr-{0}', github.event.pull_request.number)
