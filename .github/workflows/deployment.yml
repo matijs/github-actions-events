@@ -1,0 +1,38 @@
+name: Create PR deployment
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+permissions:
+  contents: read
+  deployments: write
+
+env:
+  GH_TOKEN: ${{ github.token }}
+  GH_REPO: ${{ github.repository }}
+  PR_NUMBER: ${{ github.event.pull_request.number }}
+
+jobs:
+  create:
+    runs-on: ubuntu-latest
+    steps:
+      - name: create deployment
+        run: |
+          deployment_id=$(
+            gh api /repos/:owner/:repo/deployments \
+              --field "ref=${GITHUB_HEAD_REF}" \
+              --field "environment=pr-${PR_NUMBER}" \
+              --field "required_contexts[]" \
+              --jq '.id'
+          )
+          echo "deployment_id=${deployment_id}" >> "${GITHUB_ENV}"
+      - name: update deployment
+        run: |
+          gh api /repos/:owner/:repo/deployments/${deployment_id}/statuses \
+            --field "state=success" \
+            --field "environment_url=https://www.example.org/${PR_NUMBER}"
+
